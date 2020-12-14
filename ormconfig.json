@@ -1,11 +1,11 @@
 {
-    "type": "sqlite",
-    "database": "./database.sqlite",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "fatemeh",
+    "password": "ftmal3922@",
+    "database": "dblab6",
     "synchronize": "true",
-    "entities": [
-      "dist/db/**/*.js"
-    ],
-    "cli": {
-      "entitiesDir": "src/db"
-    }
+    "entities": ["dist/**/**.entity{.ts,.js}"],
+    "cli": {"entitiesDir": "src/db"}
 }

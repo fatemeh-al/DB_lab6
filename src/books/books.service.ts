@@ -1,9 +1,11 @@
 
 import BookEntity from '../db/book.entity';
 import CreateBookDto from './dto/createBook.dto';
+import  UpdateBookDto from './dto/updateBook.dto';
 import UserEntity from '../db/user.entity';
 import { createQueryBuilder, getConnection } from 'typeorm';
 import GenreEntity from '../db/genre.entity';
+import { BooksModule } from './books.module';
 
 export class BooksService {
 
@@ -23,7 +25,27 @@ export class BooksService {
   }
 
   async getAllBooks(): Promise<BookEntity[] > {
-    // const user: UserEntity = await UserEntity.findOne({where: {id: 2}, relations: ['books']});
     return BookEntity.find();
   }
+
+  async updateBook(bookDetails: UpdateBookDto): Promise<BookEntity>{
+    const { id, name , userID , genreIDs } = bookDetails;
+    const book = await BookEntity.findOne({where: {id: id}});
+    book.name = name;
+    book.user = await UserEntity.findOne(userID);
+    book.genres=[];
+    for ( let i = 0; i < genreIDs.length ; i++)
+    {
+      const genre = await GenreEntity.findOne(genreIDs[i]);
+      book.genres.push(genre);
+    }
+    await book.save();
+    return book;
+  }
+
+  async deleteBook(bookId: number): Promise<String>{
+    await BookEntity.delete({id: bookId});
+    return "done";
+  }
+
 }
