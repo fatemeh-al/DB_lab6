@@ -1,4 +1,6 @@
+import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
 
 export default class CreateGenreDto {
-    readonly type: string;
-  }
+  @ApiProperty({description: 'Enter genre name > ', type: String})
+  readonly type: string;
+}
