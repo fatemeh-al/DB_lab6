@@ -8,6 +8,7 @@ import CreateCategoryDTO from './dto/createCategory.dto';
 import CreateItemDto from './dto/createItem.dto';
 import CreateTagDto from './dto/createTag.dto';
 import CreateTaskDto from './dto/createTask.dto';
+import EditTaskDto from './dto/editTask.dto';
 
 @Injectable()
 export class TodoService {
@@ -52,5 +53,31 @@ export class TodoService {
         }
         await TaskEntity.save(taskEntity);
         return taskEntity;
+    }
+
+    async editTask(taskDetails: EditTaskDto): Promise<TaskEntity> {
+        const taskEntity = await TaskEntity.findOne(taskDetails.taskID);
+        taskEntity.user = await UserEntity.findOne(taskDetails.userID);
+        taskEntity.category = await CategoryEntity.findOne(taskDetails.categoryID);
+        taskEntity.items=[];
+        for ( let i = 0; i < taskDetails.itemIDs.length ; i++)
+        {
+            const item = await ItemEntity.findOne(taskDetails.itemIDs[i]);
+            taskEntity.items.push(item);
+        }
+        taskEntity.tags=[];
+        for ( let i = 0; i < taskDetails.tagIDs.length ; i++)
+        {
+            const tag = await TagEntity.findOne(taskDetails.tagIDs[i]);
+            taskEntity.tags.push(tag);
+        }
+        await taskEntity.save();
+        return taskEntity;
+    }
+
+    async deleteTask(taskID: number): Promise<TaskEntity> {
+        const task = await TaskEntity.findOne(taskID);
+        await task.remove();
+        return task;
     }
 }
