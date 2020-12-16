@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from 'typeorm';
-import BookEntity from './book.entity';
+import TaskEntity from './task.entity';
 
 @Entity()
 export default class UserEntity extends BaseEntity {
@@ -10,10 +10,10 @@ export default class UserEntity extends BaseEntity {
     @Column({ length: 500 })
     name: string;
 
-    @OneToMany( type => BookEntity , book => book.user)
-    books: BookEntity[];
-
     @Column({ length: 500 })
     password: string;
+
+    @OneToMany( type => TaskEntity , task => task.user )
+    tasks: TaskEntity[];
 
 }

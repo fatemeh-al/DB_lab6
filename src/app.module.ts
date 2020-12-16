@@ -2,23 +2,23 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HelloModule } from './hello/hello.module';
-import { BooksModule } from './books/books.module';
-import { GenreModule } from './genre/genre.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { TodoModule } from './todo/todo.module';
 import UserEntity from './db/user.entity';
-import BookEntity from './db/book.entity';
-import GenreEntity from './db/genre.entity';
+import CategoryEntity from './db/category.entity';
+import ItemEntity from './db/item.entity';
+import TagEntity from './db/tag.entity';
+import TaskEntity from './db/task.entity';
 
 @Module({
   imports: [HelloModule,
-            BooksModule,
-            GenreModule,
             UserModule,
-            TypeOrmModule.forFeature([UserEntity, BookEntity , GenreEntity],),
+            TypeOrmModule.forFeature([UserEntity, TagEntity, TaskEntity, ItemEntity, CategoryEntity],),
             TypeOrmModule.forRoot(),
-            AuthModule,],
+            AuthModule,
+            TodoModule,],
   controllers: [AppController],
   providers: [AppService],
 })

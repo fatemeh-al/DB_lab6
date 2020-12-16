@@ -26,11 +26,4 @@ export class UserController {
     return this.usersServices.getAllUsers();
   }
 
-  @ApiOperation({ summary: 'Get one user\'s books' })
-  @ApiResponse({ status: 200, description: 'Found books'})
-  @ApiBody({description: 'Enter user id', type: Number})
-  @Get('books')
-  getBooks( @Body('userID', ParseIntPipe) userID: number ) {
-    return this.usersServices.getBooksOfUser(userID);
-  }
 }
