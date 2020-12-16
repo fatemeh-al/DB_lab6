@@ -1,7 +1,8 @@
-import { Body, Controller, Get, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, ParseIntPipe, Post, Put , UseGuards} from '@nestjs/common';
 import { UserServices } from './user.service';
 import CreateUserDto from './dto/createUser.dto';
-import {ApiResponse, ApiQuery, ApiOperation, ApiBody} from '@nestjs/swagger';
+import {ApiResponse, ApiQuery, ApiOperation, ApiBody, ApiBearerAuth} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -15,8 +16,11 @@ export class UserController {
     return this.usersServices.insert(user);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 200, description: 'Get all users' })
+  @ApiResponse({ status: 401, description: 'You should login first' })
   @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({status: 200})
   @Get()
   getAll() {
     return this.usersServices.getAllUsers();
