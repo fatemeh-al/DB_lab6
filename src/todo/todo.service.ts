@@ -75,9 +75,22 @@ export class TodoService {
         return taskEntity;
     }
 
-    async deleteTask(taskID: number): Promise<TaskEntity> {
+    async deleteTask(taskID: number): Promise<any> {
         const task = await TaskEntity.findOne(taskID);
         await task.remove();
-        return task;
+        return "done";
+    }
+
+    async deleteItem(itemID: number): Promise<any>{
+        const item = await ItemEntity.findOne(itemID);
+        let tasks = TaskEntity.find();
+        for (let i = 0; i < (await tasks).length; i++){
+            const index = tasks[i].items.indexOf(itemID, 0);
+            if (index > -1) {
+                tasks[i].items.splice(index, 1);
+            }
+        }
+        await item.remove();
+        return "done";
     }
 }

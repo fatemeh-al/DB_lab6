@@ -73,4 +73,14 @@ export class TodoController {
         return this.todoService.editTask(task);
     }
 
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Delete('deleteItem')
+    @ApiResponse({ status: 200, description: 'Delete an item' })
+    @ApiResponse({ status: 401, description: 'You should login first' })
+    @ApiBody({description: 'Enter itemID', type: [Number]})
+    deleteItem( @Body('itemID', ParseIntPipe) itemID: number) {
+        return this.todoService.deleteItem(itemID);
+    }
+
 }
